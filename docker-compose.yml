@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  postgres_tenant:
+    image: postgres:12
+    container_name: postgres_tenant
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=multi_tenant,multi_tenant_a,multi_tenant_b
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./multiple-databases.sh:/docker-entrypoint-initdb.d/multiple-databases.sh
+    networks:
+      - network-backend
+
+networks:
+  network-backend:
+    driver: bridge
