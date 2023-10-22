@@ -14,7 +14,7 @@ public class DefaultDataSourceConfiguration {
   private final DefaultDataSourceRouter defaultDataSourceRouter;
 
   public DefaultDataSourceConfiguration(final DefaultDataSourceRouter defaultDataSourceRouter) {
-    this.defaultDataSourceRouter = Objects.requireNonNull(defaultDataSourceRouter, "DataSourceRouter must not be null.");
+    this.defaultDataSourceRouter = Objects.requireNonNull(defaultDataSourceRouter, "DefaultDataSourceRouter must not be null.");
   }
 
   @Primary

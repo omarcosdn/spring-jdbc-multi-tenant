@@ -20,7 +20,7 @@ public class TenantDataSourceConfiguration {
   public DataSource tenantDataSource() {
     final var dataSource = new DriverManagerDataSource();
     dataSource.setDriverClassName(properties.getDriverClassName());
-    dataSource.setUrl(properties.getUrl().formatted("multi_tenant"));
+    dataSource.setUrl(properties.getUrl().formatted("tenant_config"));
     dataSource.setUsername(properties.getUsername());
     dataSource.setPassword(properties.getPassword());
     return dataSource;
