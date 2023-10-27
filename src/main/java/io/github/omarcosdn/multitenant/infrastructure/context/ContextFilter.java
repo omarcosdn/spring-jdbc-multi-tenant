@@ -25,10 +25,10 @@ public class ContextFilter extends OncePerRequestFilter {
       final var companyId = UUID.fromString(request.getHeader("x-company-id"));
       final var traceId = getTraceId(request);
       final var context = Context.create(companyId, traceId);
-      ThreadContext.of(context);
+      ContextHolder.create(context);
       filterChain.doFilter(request, response);
     } finally {
-      ThreadContext.clear();
+      ContextHolder.clear();
     }
   }
 

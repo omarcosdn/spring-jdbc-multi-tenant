@@ -5,9 +5,14 @@ spring:
   application:
     name: MultiTenantApp
 
-app:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/%s
-    username: postgres
-    password: password
+product-database-lookup-pg:
+  driver-class-name: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/product_database_lookup
+  username: postgres
+  password: password
+
+product-database-tenant-pg:
+  driver-class-name: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/%s
+  username: postgres
+  password: password

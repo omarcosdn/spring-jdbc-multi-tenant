@@ -3,9 +3,9 @@ package io.github.omarcosdn.multitenant.infrastructure.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@ConfigurationProperties(prefix = "app.datasource")
+@ConfigurationProperties(prefix = "product-database-tenant-pg")
 @Component
-public class DataSourceProperties {
+public class TenantDataSourceProperties {
 
   private String driverClassName;
   private String url;

@@ -1,4 +1,4 @@
-package io.github.omarcosdn.multitenant.infrastructure.tenant;
+package io.github.omarcosdn.multitenant.infrastructure.lookup;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,19 +12,19 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TenantConfigRepositoryImpl implements TenantConfigRepository {
+public class LookupDatabaseRepositoryImpl implements LookupDatabaseRepository {
 
   private final JdbcTemplate jdbcTemplate;
 
-  public TenantConfigRepositoryImpl(@Qualifier("TenantJdbcTemplate") final JdbcTemplate jdbcTemplate) {
+  public LookupDatabaseRepositoryImpl(@Qualifier("lookupJdbcTemplate") final JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = Objects.requireNonNull(jdbcTemplate, "JdbcTemplate must not be null.");
   }
 
   @Override
-  public Optional<TenantConfigDTO> findByCompanyId(final UUID companyId) {
+  public Optional<LookupDatabaseDTO> findByCompanyId(final UUID companyId) {
     final var query = "SELECT company_id, datasource_name FROM company_datasource WHERE company_id = ?";
 
-    final var resultList = jdbcTemplate.query(query, new TenantConfigRowMapper(), companyId);
+    final var resultList = jdbcTemplate.query(query, new LookupDatabaseRowMapper(), companyId);
 
     return resultList.stream().findFirst();
   }
@@ -33,10 +33,10 @@ public class TenantConfigRepositoryImpl implements TenantConfigRepository {
   public List<String> findAllDataSourceNames() {
     final var query = "SELECT DISTINCT datasource_name FROM company_datasource";
 
-    return jdbcTemplate.query(query, new TenantConfigDataSourceNameRowMapper());
+    return jdbcTemplate.query(query, new DataSourceNameRowMapper());
   }
 
-  private static class TenantConfigDataSourceNameRowMapper implements RowMapper<String> {
+  private static class DataSourceNameRowMapper implements RowMapper<String> {
 
     @Override
     public String mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
@@ -44,13 +44,13 @@ public class TenantConfigRepositoryImpl implements TenantConfigRepository {
     }
   }
 
-  private static class TenantConfigRowMapper implements RowMapper<TenantConfigDTO> {
+  private static class LookupDatabaseRowMapper implements RowMapper<LookupDatabaseDTO> {
 
     @Override
-    public TenantConfigDTO mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
+    public LookupDatabaseDTO mapRow(final ResultSet resultSet, int rowNum) throws SQLException {
       final var companyId = resultSet.getObject("company_id", UUID.class);
       final var datasourceName = resultSet.getString("datasource_name");
-      return TenantConfigDTO.of(companyId, datasourceName);
+      return LookupDatabaseDTO.of(companyId, datasourceName);
     }
   }
 

@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Configuration;
 public class CacheConfiguration {
 
   @Bean
-  public TenantConfigCache tenantConfigCache() {
-    return TenantConfigCache.create();
+  public LookupDatabaseCache lookupDatabaseCache() {
+    return LookupDatabaseCache.create();
   }
-
 }

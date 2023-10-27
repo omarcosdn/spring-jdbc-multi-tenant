@@ -7,8 +7,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_TENANT_CONFIG_DATABASE=tenant_config
-      - POSTGRES_MULTIPLE_DATABASES=multi_tenant_a,multi_tenant_b
+      - POSTGRES_TENANT_CONFIG_DATABASE=product_database_lookup
+      - POSTGRES_MULTIPLE_DATABASES=product_database_tenant_00,product_database_tenant_01
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
     volumes:

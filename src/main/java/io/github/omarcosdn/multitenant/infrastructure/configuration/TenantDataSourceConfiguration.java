@@ -1,34 +1,26 @@
 package io.github.omarcosdn.multitenant.infrastructure.configuration;
 
-import java.util.Objects;
-import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import static java.util.Objects.requireNonNull;
+
+@DependsOn("tenantDataSourceRouter")
 @Configuration
 public class TenantDataSourceConfiguration {
 
-  private final DataSourceProperties properties;
+  private final TenantDataSourceRouter router;
 
-  public TenantDataSourceConfiguration(final DataSourceProperties properties) {
-    this.properties = Objects.requireNonNull(properties, "DataSourceProperties must not be null.");
+  public TenantDataSourceConfiguration(final TenantDataSourceRouter tenantDataSourceRouter) {
+    this.router = requireNonNull(tenantDataSourceRouter, "TenantDataSourceRouter must not be null.");
   }
 
-  @Bean(name = "TenantDataSource")
-  public DataSource tenantDataSource() {
-    final var dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName(properties.getDriverClassName());
-    dataSource.setUrl(properties.getUrl().formatted("tenant_config"));
-    dataSource.setUsername(properties.getUsername());
-    dataSource.setPassword(properties.getPassword());
-    return dataSource;
-  }
-
-  @Bean(name = "TenantJdbcTemplate")
+  @Bean
+  @Primary
   public JdbcTemplate tenantJdbcTemplate() {
-    return new JdbcTemplate(tenantDataSource());
+    return new JdbcTemplate(router);
   }
-
 }

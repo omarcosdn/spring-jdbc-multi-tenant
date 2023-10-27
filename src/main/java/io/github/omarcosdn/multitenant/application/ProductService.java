@@ -1,6 +1,6 @@
 package io.github.omarcosdn.multitenant.application;
 
-import io.github.omarcosdn.multitenant.infrastructure.context.ThreadContext;
+import io.github.omarcosdn.multitenant.infrastructure.context.ContextHolder;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,6 @@ public class ProductService {
   }
 
   public List<Product> findAll() {
-    final var companyId = ThreadContext.get().getCompanyId();
-    return repository.findAll(companyId);
+    return ContextHolder.map(ctx -> repository.findAll(ctx.getCompanyId()));
   }
-
 }
